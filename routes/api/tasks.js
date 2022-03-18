@@ -9,20 +9,20 @@ nunjucks.configure('views', {
 });
 
 /* 
-    BASE URL / tasks
-    GET / - get all tasks
-    POST / - create a new task
-    GET /:id - get a task by id
-    PUT /:id - update a task by id
-    DELETE /:id - delete a task by id
+    BASE URL / meeps
+    GET / - get all meeps
+    POST / - create a new name
+    GET /:id - get a name by id
+    PUT /:id - update a name by id
+    DELETE /:id - delete a name by id
 
 */
 router.get('/', async (req, res, next) => {
     await pool.promise()
-        .query('SELECT * FROM tasks')
+        .query('SELECT * FROM meeps')
         .then(([rows, fields]) => {
             res.json({
-                tasks: {
+                meeps: {
                     data: rows
                 }
             });
@@ -30,8 +30,8 @@ router.get('/', async (req, res, next) => {
         .catch(err => {
             console.log(err);
             res.status(500).json({
-                tasks: {
-                    error: "Error getting tasks"
+                meeps: {
+                    error: "Error getting meeps"
                 }
             })
         });
@@ -44,16 +44,16 @@ router.get('/:id', async (req, res, next) => {
 
     if (isNaN(req.params.id)) {
         res.status(400).json({
-            task: {
+            name: {
                 error: 'Bad request'
             }
         });
     } else {
         await pool.promise()
-        .query('SELECT * FROM tasks WHERE id = ?', [id])
+        .query('SELECT * FROM meeps WHERE id = ?', [id])
         .then(([rows, fields]) => {
             res.json({
-                task: {
+                name: {
                     data: rows
                 }
             });
@@ -72,17 +72,17 @@ router.get('/:id/delete', async (req, res, next) => {
 
     if (isNaN(req.params.id)) {
         res.status(400).json({
-            task: {
+            name: {
                 error: 'Bad request'
             }
         });
     } else {
-    res.json(`deleting task ${id}`);
+    res.json(`deleting name ${id}`);
     await pool.promise()
-        .query('DELETE FROM tasks WHERE id = ?', [id])
+        .query('DELETE FROM meeps WHERE id = ?', [id])
         .then(([rows, fields]) => {
             res.json({
-                task: {
+                name: {
                     data: rows
                 }
             });
@@ -94,10 +94,10 @@ router.get('/', async (req, res, next) => {
     res.json(req.body);
 
     await pool.promise()
-    .query('SELECT INTO tasks (task) VALUES (?)', [tasks])
+    .query('SELECT INTO meeps (name) VALUES (?)', [meeps])
     .then(([response]) => {
         res.json({
-            tasks: {
+            meeps: {
                 data: response
             }
         });
@@ -105,8 +105,8 @@ router.get('/', async (req, res, next) => {
     .catch(err => {
         console.log(err);
         res.status(500).json({
-            tasks: {
-                error: "Error getting tasks"
+            meeps: {
+                error: "Error getting meeps"
             }
         })
     });
