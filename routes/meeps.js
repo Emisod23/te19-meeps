@@ -114,6 +114,45 @@ router.get('/', async (req, res, next) => {
     });
 });
 
+router.post('/', async (req, res, next) => {
+    // { "name": "koda post" }
+    const name = req.body.name;
+
+    if (name.length < 3) {
+        res.status(400).json({
+            name: {
+                error: 'A name must have at least 3 characters',
+            },
+        });
+    }
+
+    await pool
+        .promise()
+        .query('INSERT INTO meeps (name) VALUES (?)', [name])
+        .then((response) => {
+            if (response[0].affectedRows === 1) {
+                req.session = "Successfully added name";
+                res.redirect('/meeps');
+            } else {
+                res.status(400).json({
+                    name: {
+                        error: 'Invalid name',
+                    },
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                name: {
+                    error: 'Error getting meeps',
+                },
+            });
+        });
+
+    // res.json(req.body);
+});
+
 router.post('/:id/complete', async (req, res, next) => {
     const id = req.params.id;
 
