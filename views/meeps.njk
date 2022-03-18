@@ -2,44 +2,44 @@
 {% block  content %}
 <main class="container mt-3">
     <div>
-        <form action="/tasks" method="post">
+        <form action="/meeps" method="post">
             <div class="input-group mb-3">
-                <label for="task" class="visually-hidden">Task</label>
+                <label for="name" class="visually-hidden">name</label>
                 <input
                     class="form-control"
                     type="text"
-                    name="task"
-                    id="task"
-                    placeholder="Write a task..."
+                    name="name"
+                    id="name"
+                    placeholder="Write a name..."
                     required>
-                <button class="btn btn-primary" type="submit">Add task</button>
+                <button class="btn btn-primary" type="submit">Add name</button>
             </div>
         </form>
     </div>
     <div>
         <ul class="list-group">
-        {% for task in tasks %}
+        {% for name in meeps %}
             <li class="list-group-item d-flex justify-content-between">
-                {{task.task}}
+                {{name.name}}
                 <div class="d-flex">
                     <div class="form-check me-3">
                         <input
                             class="form-check-input"
                             type="checkbox"
-                            value="{{task.completed}}"
-                            name="task-{{task.id}}"
-                            id="task-{{task.id}}"
-                            {% if task.completed %}checked{% endif %}>
+                            value="{{name.completed}}"
+                            name="name-{{name.id}}"
+                            id="name-{{name.id}}"
+                            {% if name.completed %}checked{% endif %}>
                         <label
                             class="form-check-label"
-                            for="task-{{task.id}}">
+                            for="name-{{name.id}}">
                             Completed
                         </label>
                     </div>
                     <a
-                        href="/tasks/{{task.id}}/delete"
+                        href="/meeps/{{name.id}}/delete"
                         class="btn btn-danger">
-                        Delete task
+                        Delete name
                     </a>
                 </div>
             </li>
