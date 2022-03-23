@@ -160,7 +160,16 @@ router.post('/:id/complete', async (req, res, next) => {
     .promise()
     .query('UPDATE meeps SET completed = !completed WHERE id = ?', [id])
     .then(response => {
-        console.log(response);
+        if (response[0].affectedRows === 1) {
+            req.session = "Successfully completed meep";
+            res.redirect('/meeps');
+        } else {
+            res.status(400).json({
+                name: {
+                    error: 'whoops',
+                },
+            });
+        }
     })
     .catch(error => {
         console.log(error);
